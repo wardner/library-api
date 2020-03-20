@@ -1,20 +1,32 @@
 require('./config/config');
 
 const express = require('express');
-const app = express();
+const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
-//parse application/x-www-form-urlencoded
+const app = express();
+
+// parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
-//parse application/json
-app.use(bodyParser.json);
+// parse application/json
+app.use(bodyParser.json());
 
-app.get('/', (req, res) => {
+app.use(require('./controllers/book'));
 
-    res.status(200).json('hello world');
+mongoose.connect('mongodb://localhost:27017/library', {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    },
+    (err, res) => {
 
-});
+        if (err) {
+            throw err;
+        }
+
+        console.log('base de datos online');
+
+    });
 
 app.listen(process.env.PORT, () => {
     console.log('escuchando puerto: ', process.env.PORT);
