@@ -1,4 +1,5 @@
 const express = require('express');
+const Book = require('../models/book');
 
 const app = express();
 
@@ -13,8 +14,27 @@ app.post('/book', (req, res) => {
 
     let body = req.body;
 
-    res.status(200).json({
-        book: body
+    let book = new Book({
+        isbn: body.isbn,
+        title: body.title,
+        author: body.author,
+        pages: body.pages,
+        editorial: body.editorial,
+        status: body.status
+    });
+
+    book.save((err, bookDB) => {
+        if (err) {
+            return res.status(400).json({
+                ok: false,
+                err
+            });
+        }
+
+        res.status(200).json({
+            ok: true,
+            book: bookDB
+        });
     });
 
 });

@@ -16,7 +16,8 @@ app.use(require('./controllers/book'));
 
 mongoose.connect('mongodb://localhost:27017/library', {
         useNewUrlParser: true,
-        useUnifiedTopology: true
+        useUnifiedTopology: true,
+        useCreateIndex: true
     },
     (err, res) => {
 
