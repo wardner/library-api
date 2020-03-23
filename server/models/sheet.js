@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 
 let SheetSchema = new Schema({
-    body: {
+    content: {
         type: String
     },
     isbn: {

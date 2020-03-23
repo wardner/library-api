@@ -13,6 +13,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use(require('./controllers/book'));
+app.use(require('./controllers/sheet'));
+
 
 mongoose.connect('mongodb://localhost:27017/library', {
         useNewUrlParser: true,

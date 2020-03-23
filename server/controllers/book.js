@@ -41,11 +41,23 @@ app.post('/book', (req, res) => {
 
 app.put('/book/:id', (req, res) => {
 
-    let id = req.params.id;
+    let isbn = req.params.isbn;
+    let body = req.body;
 
-    res.status(200).json({
-        id
-    });
+    Book.findOneAndUpdate(isbn, body, { new: true, useFindAndModify: false },
+        (err, bookDB) => {
+            if (err) {
+                return res.status(400).json({
+                    ok: false,
+                    err
+                });
+            }
+
+            res.status(200).json({
+                ok: true,
+                book: bookDB
+            });
+        });
 
 });
 
