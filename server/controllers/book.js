@@ -130,7 +130,7 @@ app.delete('/book/:isbn', (req, res) => {
 
     let { isbn } = req.params;
 
-    Book.findOneAndDelete({ isbn }, (err, deletedbook) => {
+    Book.findOneAndUpdate({ isbn }, { status: false }, { new: true, useFindAndModify: false }, (err, deletedbook) => {
         if (err) {
             return res.status(400).json({
                 ok: false,
