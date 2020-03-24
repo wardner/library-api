@@ -4,18 +4,18 @@ const Sheet = require('../models/sheet');
 const app = express();
 
 
-app.get('/sheet', (req, res) => {
+app.get('/sheet/:isbn', (req, res) => {
 
+    let { isbn } = req.params;
     let skip = req.query.skip || 0;
     let limit = req.query.limit || 5;
     limit = Number(limit);
     skip = Number(skip);
 
-    Sheet.find({})
+    Sheet.find({ isbn })
         .skip(skip)
         .limit(limit)
         .exec((err, pages) => {
-
             if (err) {
                 return res.status(400).json({
                     ok: false,
@@ -23,12 +23,57 @@ app.get('/sheet', (req, res) => {
                 });
             }
 
-            Sheet.countDocuments({}, (err, count) => {
-                res.json({
-                    ok: true,
-                    pages,
-                    total: count
+            if (!pages[0]) {
+                return res.status(404).json({
+                    ok: false,
+                    err: {
+                        message: 'No se encontraron paginas de ese libro modofoka'
+                    }
                 })
+            }
+
+            res.json({
+                ok: true,
+                pages,
+                total: Sheet.length
+            })
+
+        });
+
+});
+
+app.get('/sheet/:isbn/:pagenumber', (req, res) => {
+
+    let { isbn, pagenumber } = req.params;
+    let skip = req.query.skip || 0;
+    let limit = req.query.limit || 5;
+    limit = Number(limit);
+    skip = Number(skip);
+
+    Sheet.find({ isbn, pagenumber })
+        .skip(skip)
+        .limit(limit)
+        .exec((err, pages) => {
+            if (err) {
+                return res.status(400).json({
+                    ok: false,
+                    err
+                });
+            }
+
+            if (!pages[0]) {
+                return res.status(404).json({
+                    ok: false,
+                    err: {
+                        message: `No se hayo la pagina ${pagenumber} del libro`
+                    }
+                });
+            }
+
+            res.json({
+                ok: true,
+                pages,
+                total: Sheet.length
             });
 
         });
@@ -65,12 +110,12 @@ app.post('/sheet', async(req, res) => {
 
 });
 
-app.put('/sheet/:id', (req, res) => {
+app.put('/sheet/:isbn/:pagenumber', (req, res) => {
 
-    let isbn = req.params.id;
+    let { isbn, pagenumber } = req.params;
     let body = req.body;
 
-    Sheet.findOneAndUpdate({ isbn }, body, { new: true, useFindAndModify: false },
+    Sheet.findOneAndUpdate({ isbn, pagenumber }, body, { new: true, useFindAndModify: false },
         (err, sheetDB) => {
             if (err) {
                 return res.status(400).json({
@@ -112,7 +157,7 @@ app.delete('/sheet/:isbn/:pagenumber', async(req, res) => {
 
         res.status(200).json({
             ok: true,
-            sheet: deletedSheet
+            sheet: `La pagina ${pagenumber} se ha eliminado`
         });
 
     });

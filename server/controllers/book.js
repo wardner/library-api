@@ -24,12 +24,42 @@ app.get('/book', (req, res) => {
                 });
             }
 
-            Book.countDocuments({}, (err, count) => {
-                res.json({
-                    ok: true,
-                    books,
-                    total: count
-                })
+            res.json({
+                ok: true,
+                books,
+                total: books.length
+            })
+
+        });
+
+});
+
+app.get('/book/:isbn', (req, res) => {
+
+    let { isbn } = req.params;
+
+    Book.find({ isbn }, 'isbn title author pages editorial status')
+        .exec((err, book) => {
+
+            if (err) {
+                return res.status(400).json({
+                    ok: false,
+                    err
+                });
+            }
+
+            if (!book) {
+                return res.status(400).json({
+                    ok: false,
+                    err: {
+                        message: 'Libro no encontrado'
+                    }
+                });
+            }
+
+            res.json({
+                ok: true,
+                book
             });
 
         });
@@ -67,7 +97,7 @@ app.post('/book', (req, res) => {
 
 app.put('/book/:id', (req, res) => {
 
-    let isbn = req.params.isbn;
+    let { isbn } = req.params;
     let body = _.pick(req.body, ['title, author, pages, editorial, status']);
 
     Book.findOneAndUpdate({ isbn }, body, { new: true, useFindAndModify: false },
