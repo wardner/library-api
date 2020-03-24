@@ -8,8 +8,11 @@ let SheetSchema = new Schema({
     },
     isbn: {
         type: String
+    },
+    pagenumber: {
+        type: Number,
+        unique: true
     }
 });
-
 
 module.exports = mongoose.model('Sheet', SheetSchema);

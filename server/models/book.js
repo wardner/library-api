@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 
 let BookSchema = new Schema({
+
     isbn: {
         type: String,
         required: [true, 'Es necesario el ISBN'],
@@ -23,7 +24,7 @@ let BookSchema = new Schema({
     },
     status: {
         type: Boolean
-    }
+    },
 
 });
 
