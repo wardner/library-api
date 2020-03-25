@@ -10,8 +10,7 @@ let SheetSchema = new Schema({
         type: String
     },
     pagenumber: {
-        type: Number,
-        unique: true
+        type: Number
     }
 });
 
