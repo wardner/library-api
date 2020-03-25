@@ -3,8 +3,8 @@ const Sheet = require('../models/sheet');
 
 const app = express();
 
-
-app.get('/sheet/:isbn', (req, res) => {
+// /sheet
+app.get('/:isbn', (req, res) => {
 
     let { isbn } = req.params;
     let skip = req.query.skip || 0;
@@ -42,7 +42,8 @@ app.get('/sheet/:isbn', (req, res) => {
 
 });
 
-app.get('/sheet/:isbn/:pagenumber', (req, res) => {
+// /sheet
+app.get('/:isbn/:pagenumber', (req, res) => {
 
     let { isbn, pagenumber } = req.params;
     let skip = req.query.skip || 0;
@@ -80,7 +81,8 @@ app.get('/sheet/:isbn/:pagenumber', (req, res) => {
 
 });
 
-app.post('/sheet', async(req, res) => {
+// /sheet
+app.post('/', async(req, res) => {
 
     let { content, isbn } = req.body;
 
@@ -110,7 +112,8 @@ app.post('/sheet', async(req, res) => {
 
 });
 
-app.put('/sheet/:isbn/:pagenumber', (req, res) => {
+// /sheet
+app.put('/:isbn/:pagenumber', (req, res) => {
 
     let { isbn, pagenumber } = req.params;
     let body = req.body;
@@ -134,7 +137,8 @@ app.put('/sheet/:isbn/:pagenumber', (req, res) => {
 
 });
 
-app.delete('/sheet/:isbn/:pagenumber', async(req, res) => {
+// /sheet
+app.delete('/:isbn/:pagenumber', async(req, res) => {
 
     let { isbn, pagenumber } = req.params;
 

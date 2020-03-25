@@ -4,8 +4,8 @@ const _ = require('underscore');
 
 const app = express();
 
-
-app.get('/book', (req, res) => {
+// /book
+app.get('/', (req, res) => {
 
     let skip = req.query.skip || 0;
     let limit = req.query.limit || 5;
@@ -34,7 +34,8 @@ app.get('/book', (req, res) => {
 
 });
 
-app.get('/book/:isbn', (req, res) => {
+// /book
+app.get('/:isbn', (req, res) => {
 
     let { isbn } = req.params;
 
@@ -66,7 +67,8 @@ app.get('/book/:isbn', (req, res) => {
 
 });
 
-app.post('/book', (req, res) => {
+// /book
+app.post('/', (req, res) => {
 
     let body = req.body;
 
@@ -95,7 +97,8 @@ app.post('/book', (req, res) => {
 
 });
 
-app.put('/book/:id', (req, res) => {
+// /book
+app.put('/:id', (req, res) => {
 
     let { isbn } = req.params;
     let body = _.pick(req.body, ['title, author, pages, editorial, status']);
@@ -126,7 +129,8 @@ app.put('/book/:id', (req, res) => {
 
 });
 
-app.delete('/book/:isbn', (req, res) => {
+// /book
+app.delete('/:isbn', (req, res) => {
 
     let { isbn } = req.params;
 
